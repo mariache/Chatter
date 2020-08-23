@@ -9,7 +9,7 @@ const typeDefs = `
         content: String!
     }
     type Query {
-        messages: [Messages!]
+        messages: [Message!]
     }
 `;
 
