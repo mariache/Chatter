@@ -4,6 +4,7 @@ import {
   InMemoryCache,
   ApolloProvider,
   useQuery,
+  useMutation,
   gql,
 } from "@apollo/client";
 import { Container, Row, Col, FormInput, Button } from "shards-react";
@@ -23,6 +24,12 @@ const GET_MESSAGES = gql`
   }
 `;
 
+const POST_MESSAGE = gql`
+  mutation($user: String!, $content: String!) {
+    postMessage(user: $user, content: $content)
+  }
+`;
+
 const Messages = ({ user }) => {
   const { data } = useQuery(GET_MESSAGES);
   if (!data) {
@@ -30,8 +37,9 @@ const Messages = ({ user }) => {
   }
   return (
     <>
-      {data.messages.map(({ id, user: messageUser, content }) => (
+      {data.messages.map(({ id, user: messageUser, content }, index) => (
         <div
+          key={index}
           style={{
             display: "flex",
             justifyContent: user === messageUser ? "flex-end" : "flex-start",
@@ -76,6 +84,20 @@ const Chat = () => {
     user: "Jack",
     content: "",
   });
+
+  const [postMessage] = useMutation(POST_MESSAGE);
+
+  const onSend = () => {
+    if (state.content.length > 0) {
+      postMessage({
+        variables: state,
+      });
+    }
+    stateSet({
+      ...state,
+      content: "",
+    });
+  };
 
   return (
     <Container>
