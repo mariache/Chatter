@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "react": "^16.13.0",
-    "react-dom": "^16.13.0"
+    "react-dom": "^16.13.0",
+    "shards-react": "^1.0.3"
   }
 }
